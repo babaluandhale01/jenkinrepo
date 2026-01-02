@@ -12,7 +12,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh '''
+                bat '''
                 composer install --no-interaction
                 '''
             }
@@ -20,16 +20,17 @@ pipeline {
 
         stage('Generate Key') {
             steps {
-                sh '''
-                cp .env.example .env
+                bat '''
+                if not exist .env copy .env.example .env
                 php artisan key:generate
                 '''
             }
         }
 
-        stage('Test Route') {
+        stage('Test Laravel') {
             steps {
-                sh '''
+                bat '''
+                php artisan --version
                 php artisan route:list
                 '''
             }
